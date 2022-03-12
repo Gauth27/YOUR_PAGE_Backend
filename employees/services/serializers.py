@@ -9,7 +9,8 @@ class EmployeeSerializer(serializers.ModelSerializer):
         model = EmployeeRegistration
         fields = '__all__'
 
+
 class EmployeeNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmployeeRegistration
-        fields = ['name', 'id']
+        fields = ['name', 'id', 'department', 'reporting', 'email']
