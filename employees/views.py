@@ -7,9 +7,6 @@ from rest_framework.pagination import PageNumberPagination
 
 # Create your views here.
 
-from django.contrib.auth import get_user_model
-
-
 from .services.employee_service import *
 from .services.serializers import *
 from .services.auth_service import *

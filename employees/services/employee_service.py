@@ -1,12 +1,14 @@
+from operator import le
 from django.contrib.auth.models import User
 from ..models import EmployeeRegistration
+from leaveManagement.models import LeaveBalance, LeaveManagement
 
 
 def registerEmployeeData(data):
     new_User = User.objects.create(
         email = data['email'],
         username = data['email'],
-        is_staff = True,
+        is_staff = data['flexSwitchCheckChecked'] == 'true',
     )
     new_User.save()
     
@@ -42,7 +44,12 @@ def registerEmployeeData(data):
         photo_image = data['photo_image'],
         # documents = data['documents'],
     )
-    new_Employee.save()   
+    new_Employee.save()
+
+    leave_balance = LeaveBalance.objects.create(
+        owner = last_User
+    )
+    leave_balance.save()
 
 
 def getEmployeeByID(id):
