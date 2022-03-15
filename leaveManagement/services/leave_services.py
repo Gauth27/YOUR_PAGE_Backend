@@ -1,7 +1,9 @@
-from ..models import LeaveManagement, LeaveType
+from operator import ge
+from ..models import LeaveManagement, LeaveType, HolidayList
 from .serializers import LeaveTypeSerializer
 
 from datetime import datetime
+from datetime import timedelta, date
 
 
 def leave_balance(user):
@@ -20,23 +22,35 @@ def update_leave_Balance(user, leave_type, num):
     print(leave_type_from_DB)
 
     balance_Of_LeaveType = leave_balance(user)
-    if leave_type_from_DB == 'personal':
+    if leave_type_from_DB == "personal":
         balance_Of_LeaveType.personal -= num
-    elif leave_type_from_DB == 'casual':
+    elif leave_type_from_DB == "casual":
         balance_Of_LeaveType.casual -= num
-    elif leave_type_from_DB == 'earned':
+    elif leave_type_from_DB == "earned":
         balance_Of_LeaveType.earned -= num
-    elif leave_type_from_DB == 'sick':
+    elif leave_type_from_DB == "sick":
         balance_Of_LeaveType.sick -= num
-    elif leave_type_from_DB == 'bereavement':
+    elif leave_type_from_DB == "bereavement":
         balance_Of_LeaveType.bereavement -= num
-    elif leave_type_from_DB == 'optional':
+    elif leave_type_from_DB == "optional":
         balance_Of_LeaveType.optional -= num
-    elif leave_type_from_DB == 'maternity':
+    elif leave_type_from_DB == "maternity":
         balance_Of_LeaveType.maternity -= num
-    elif leave_type_from_DB == 'paternity':
+    elif leave_type_from_DB == "paternity":
         balance_Of_LeaveType.paternity -= num
     balance_Of_LeaveType.save()
+
+
+def get_HolidayList():
+    hol_list = HolidayList.objects.all()
+    date_list  = [i.date.strftime('%Y-%m-%d') for i in hol_list]
+    print(date_list)
+    return date_list
+
+
+def daterange(date1, date2):
+    for n in range(int((date2 - date1).days) + 1):
+        yield date1 + timedelta(n)
 
 
 def leave_management(request_data, user):
@@ -46,10 +60,23 @@ def leave_management(request_data, user):
         from_Date=request_data["from_Date"],
         to_Date=request_data["to_Date"],
     )
+      #TODO Refactor the code for better Readability.
+    
     date_format = "%Y-%m-%d"
     from_date = datetime.strptime(request_data["from_Date"], date_format)
+    print(from_date)
     to_date = datetime.strptime(request_data["to_Date"], date_format)
+    print(to_date)
     num_Of_Days = (to_date - from_date).days + 1
+    weekends = [5, 6]
+    holiday_List = get_HolidayList()
+    for dt in daterange(from_date, to_date):
 
-    new_leave.save()
-    update_leave_Balance(user, request_data["leave_type"], num_Of_Days)
+        if dt.strftime('%Y-%m-%d') in holiday_List:
+            num_Of_Days -= 1         
+        if dt.weekday() in weekends:  # to print only the weekdates
+            num_Of_Days -= 1
+    print("Number of Days: ", num_Of_Days)
+
+    # new_leave.save()
+    # update_leave_Balance(user, request_data["leave_type"], num_Of_Days)

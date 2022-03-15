@@ -28,3 +28,9 @@ class LeaveBalance(models.Model):
     optional = models.IntegerField(default=2)
     maternity = models.IntegerField(default=180)
     paternity = models.IntegerField(default=30)
+
+
+class HolidayList(models.Model):
+    key = models.AutoField(primary_key=True)
+    date = models.DateField()
+    display_name = models.TextField(max_length=200)
