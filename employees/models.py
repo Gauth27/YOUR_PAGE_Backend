@@ -27,16 +27,16 @@ class EmployeeRegistration(models.Model):
     reporting = models.CharField(max_length=50, blank=True, null=True)
     grade = models.CharField(max_length=50, blank=True, null=True)
     designation = models.CharField(max_length=50, blank=True, null=True)
-    #photo_image = models.CharField(max_length=500, blank=True, null=True)
-    _data = models.TextField(
+    # photo_image = models.CharField(max_length=500, blank=True, null=True)
+    _photo = models.TextField(
             db_column='photo_image',
             blank=True)
 
     def set_data(self, data):
-        self._data = base64.encodestring(data)
+        self._photo = base64.encodestring(data)
 
     def get_data(self):
-        return base64.decodestring(self._data)
+        return base64.decodestring(self._photo)
 
     data = property(get_data, set_data)
     documents = models.CharField(max_length=500, blank=True, null=True)

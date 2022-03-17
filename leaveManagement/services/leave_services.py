@@ -1,9 +1,8 @@
-from operator import ge
 from ..models import LeaveManagement, LeaveType, HolidayList
 from .serializers import LeaveTypeSerializer
 
 from datetime import datetime
-from datetime import timedelta, date
+from datetime import timedelta
 
 
 def leave_balance(user):
@@ -60,23 +59,18 @@ def leave_management(request_data, user):
         from_Date=request_data["from_Date"],
         to_Date=request_data["to_Date"],
     )
-      #TODO Refactor the code for better Readability.
-    
+    #TODO Refactor the code for better Readability.
     date_format = "%Y-%m-%d"
     from_date = datetime.strptime(request_data["from_Date"], date_format)
-    print(from_date)
     to_date = datetime.strptime(request_data["to_Date"], date_format)
-    print(to_date)
     num_Of_Days = (to_date - from_date).days + 1
     weekends = [5, 6]
-    holiday_List = get_HolidayList()
+    holiday_List = get_HolidayList() # Fetches the list of Holidays from the DB.
     for dt in daterange(from_date, to_date):
-
         if dt.strftime('%Y-%m-%d') in holiday_List:
-            num_Of_Days -= 1         
-        if dt.weekday() in weekends:  # to print only the weekdates
+            num_Of_Days -= 1     
+        elif dt.weekday() in weekends:
             num_Of_Days -= 1
-    print("Number of Days: ", num_Of_Days)
 
-    # new_leave.save()
-    # update_leave_Balance(user, request_data["leave_type"], num_Of_Days)
+    new_leave.save() # Creates a new entry in the Leave Mangement Table
+    update_leave_Balance(user, request_data["leave_type"], num_Of_Days) # Updates the Leave Balance Table.

@@ -41,7 +41,7 @@ def registerEmployeeData(data):
         bank_account=data['bank_account'],
         joining_date=data['joining_date'],
         last_working_date=data['last_working_date'],
-        photo_image = data['photo_image'],
+        _photo = data['photo_image'],
         # documents = data['documents'],
     )
     new_Employee.save()
