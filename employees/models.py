@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import base64
 
 # Create your models here.
 
@@ -26,7 +27,18 @@ class EmployeeRegistration(models.Model):
     reporting = models.CharField(max_length=50, blank=True, null=True)
     grade = models.CharField(max_length=50, blank=True, null=True)
     designation = models.CharField(max_length=50, blank=True, null=True)
-    photo_image = models.CharField(max_length=500, blank=True, null=True)
+    #photo_image = models.CharField(max_length=500, blank=True, null=True)
+    _data = models.TextField(
+            db_column='photo_image',
+            blank=True)
+
+    def set_data(self, data):
+        self._data = base64.encodestring(data)
+
+    def get_data(self):
+        return base64.decodestring(self._data)
+
+    data = property(get_data, set_data)
     documents = models.CharField(max_length=500, blank=True, null=True)
     bank_account = models.CharField(max_length=50, blank=True, null=True)
     joining_date = models.CharField(max_length=10, blank=True, null=True)
