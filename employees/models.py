@@ -28,17 +28,18 @@ class EmployeeRegistration(models.Model):
     grade = models.CharField(max_length=50, blank=True, null=True)
     designation = models.CharField(max_length=50, blank=True, null=True)
     # photo_image = models.CharField(max_length=500, blank=True, null=True)
-    _photo = models.TextField(
-            db_column='photo_image',
-            blank=True)
+    photo_image = models.TextField(blank=True, null=True)
+    # photo_image = models.TextField(
+    #         db_column='photo_image',
+    #         blank=True)
 
-    def set_data(self, data):
-        self._photo = base64.encodestring(data)
+    # def set_data(self, data):
+    #     self.photo_image = base64.encodestring(data)
 
-    def get_data(self):
-        return base64.decodestring(self._photo)
+    # def get_data(self):
+    #     return base64.decodestring(self.photo_image)
 
-    data = property(get_data, set_data)
+    #data = property(get_data, set_data)
     documents = models.CharField(max_length=500, blank=True, null=True)
     bank_account = models.CharField(max_length=50, blank=True, null=True)
     joining_date = models.CharField(max_length=10, blank=True, null=True)
