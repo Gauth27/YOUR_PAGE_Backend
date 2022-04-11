@@ -14,4 +14,7 @@ urlpatterns = [
     path('list', views.ApiEmployeesListView.as_view()),
     path('details/<str:pk>', views.employeeDetails),
     path('employee-registration', views.employeeRegisration),
+    path('employee-search', views.employeeSearch),
+    path('delete-employee/<str:pk>', views.deleteEmployee),
+    path('edit-employee/<str:pk>', views.updateEmployeeDetails),
 ]

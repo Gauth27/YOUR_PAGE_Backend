@@ -46,6 +46,7 @@ class EmployeeRegistration(models.Model):
     last_working_date = models.CharField(max_length=10, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     id = models.AutoField(primary_key=True, unique=True, editable=False)
+    is_deleted = models.BooleanField(blank=True, null=True, default=False)
     
     def __str__(self):
         return self.name
