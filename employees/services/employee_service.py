@@ -80,7 +80,6 @@ def getEmployeeBySearch(name):
 
 def deleteEmployeeByID(id):
     employee = EmployeeRegistration.objects.get(id=id)
-    # employee.delete()
     employee.is_deleted = True
     employee.save()
     return "IS_DELETE attribute is set to True in the Database"
